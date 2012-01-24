@@ -1,0 +1,34 @@
+@CHARSET "UTF-8";
+
+/* Style for table with full information about computer. */
+
+.detail {
+	font-weight: bold;
+	font-style: italic;
+}
+
+.detailProperty {
+	font-weight: bold;
+}
+
+.table {
+	border-style: solid;
+}
+	
+.headerRow {
+	background-color: maroon;
+	color: white;
+}
+
+/*--------------------------------------------------------*/
+
+.boldFont {
+	font-weight: bold;
+}
+
+#footer {
+	font-size: small;
+	font-weight: bold;
+	color: gray;
+	text-align: center;
+}

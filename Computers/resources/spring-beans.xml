@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+	<bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="location" value="classpath:application.properties"/>
+	</bean>
+	
+	<!-- Actions -->
+	<bean class="com.skars.computers.action.computer.PopulatorAction" scope="prototype">
+		<property name="computerDataService" ref="ComputerDataService"/>
+	</bean>
+	<bean class="com.skars.computers.action.computer.GetComputersListAction" scope="prototype">
+		<property name="computerDataService" ref="ComputerDataService"/>
+	</bean>
+	<bean class="com.skars.computers.action.computer.AddEditComputerAction" scope="prototype">
+		<property name="computerDataService" ref="ComputerDataService"/>
+	</bean>
+	<bean class="com.skars.computers.action.computer.ViewComputerAction" scope="prototype">
+		<property name="computerDataService" ref="ComputerDataService"/>
+	</bean>
+	
+	<!-- Data services -->
+	<bean id="ComputerDataService" class="com.skars.computers.dataservice.computer.ComputerDataService" lazy-init="true">
+		<property name="hibernateUtil" ref="HibernateUtil"/>
+	</bean>
+	
+	<!-- HibernateUtil -->
+	<bean id="HibernateUtil" class="com.skars.computers.util.hibernate.HibernateUtil" lazy-init="true">
+		<property name="sessionFactory" ref="SessionFactory"/>
+	</bean>
+		
+	<!-- Session factory -->
+	<bean id="SessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean" lazy-init="true">
+		<property name="dataSource" ref="DataSource"/>
+		<property name="configLocation" value="${hibernate.config}"/>
+		<property name="packagesToScan">
+			<array>
+				<value>${hibernate.package_to_scan}</value>
+			</array>
+		</property>
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">${hibernate.dialect}</prop>
+				<prop key="hibernate.connection.pool_size">${hibernate.connections_pool}</prop>
+				<prop key="hibernate.hbm2ddl.auto">${hibernate.auto_mode}</prop>
+			</props>
+		</property>
+	</bean>
+	
+	<!-- Data source -->
+	<bean id="DataSource" class="org.apache.commons.dbcp.BasicDataSource" lazy-init="true">
+		<property name="driverClassName" value="${database.driver}"/>
+		<property name="url" value="${database.url}"/>
+		<property name="username" value="${database.user}"/>
+		<property name="password" value="${database.password}"/>
+	</bean>
+</beans>
